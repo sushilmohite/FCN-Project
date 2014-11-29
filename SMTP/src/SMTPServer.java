@@ -21,6 +21,10 @@ public class SMTPServer {
 		out.println("HELO " + InetAddress.getLocalHost().getHostName());
 		String welcome = in.readLine();
 		System.out.println(welcome);
+		
+		out.println("STARTTLS");
+		System.out.println("STARTTLS");
+		
 		System.out.println("MAIL From:<" + "fussion21@gmail.com" + ">");
 		out.println("MAIL From:<" + "fussion21@gmail.com" + ">");
 		String senderOK = in.readLine();
