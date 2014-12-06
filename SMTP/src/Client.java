@@ -34,16 +34,19 @@ public class Client {
 	private JLabel content;
 	
 	private DefaultListModel<Email> listModel;
-	
-	private ClientModel model;
+
+	private String username;
+	private String password;
 
 	private static final String FROM_STR    = "From        :";
 	private static final String TO_STR      = "To          :";
 	private static final String SUBJECT_STR = "Subject     :";
 
-	public Client(ClientModel model) {
-		this.model = model;
+	public Client(String username, String password) {
 
+		this.username = username;
+		this.password = password;
+		
 		frame = new JFrame("Email Client");
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		Component contents = createComponents();
@@ -81,7 +84,7 @@ public class Client {
 		constraints.weighty = 2;
 		main.add(helloLabels, constraints); 
 
-		JLabel helloMessage = new JLabel("Hello, " + model.getUsername() + "!");
+		JLabel helloMessage = new JLabel("Hello, " + getUserName() + "!");
 		helloMessage.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 18));
 		helloLabels.add(helloMessage);
 
@@ -267,6 +270,10 @@ public class Client {
 		return main;
 	}
 	
+	private String getUserName() {
+		return this.username;
+	}
+
 	public void setReceiver(String username) {
 		this.receiver.setText(username);
 	}
@@ -287,7 +294,7 @@ public class Client {
 	}
 	
 	public static void main(String[] args) {
-		new Client(new ClientModel("krc9698@rit.edu", "1234"));
+		new Client("krc9698@rit.edu", "1234");
 	}
 
 }
