@@ -6,6 +6,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -49,6 +54,14 @@ public class Client {
 	private static final String FROM_STR    = "From        :";
 	private static final String TO_STR      = "To          :";
 	private static final String SUBJECT_STR = "Subject     :";
+	
+	// Database connectivity parameters
+	public static String dbServerIP = "krc9698.wireless.rit.edu";
+	public static String schema = "try";
+	//public static String username = "kedar";
+	//public static String password = "kedar";
+	public static String driver = "com.mysql.jdbc.Driver";
+	public static String connectionURL = "jdbc:mysql://" + dbServerIP + "/" + schema;
 
 	public Client() {
 
@@ -140,11 +153,47 @@ public class Client {
 	}
 
 	public boolean isAuthenticated(String username, String password) {
-		if(username.equals("Kedar") && password.equals("Kedar")) {
+		/*if(username.equals("Kedar") && password.equals("Kedar")) {
 			return true;
 		} else {
 			return false;
+		}*/
+		String storedPassword = null;
+		try {
+			Class.forName(driver);
+		
+			//Getting a connection to the database. Change the URL parameters
+			Connection connection = DriverManager.getConnection(connectionURL, username, password);
+			//Creating a statement object
+			Statement statement = connection.createStatement();
+			//Executing the query and getting the result set
+			ResultSet rs = statement.executeQuery("SELECT * FROM " + "fcn.user_info" + " WHERE username = '" + username + "'");
+			//Iterating the resultset and get the appId
+			if(rs.next()) {
+				storedPassword = rs.getString("password");
+			}
+			if(rs.next()) {
+				// Should not happen
+				System.err.println("Multiple entries found!");
+			}
+
+		//close the resultset, statement and connection.
+			rs.close();
+			statement.close();
+			connection.close();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		if (password.equals(storedPassword)) {
+			return true;
+		}
+		return false;
+		
 	}
 
 	private Component createComponents() {
