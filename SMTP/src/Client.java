@@ -8,13 +8,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -26,6 +32,8 @@ import javax.swing.event.ListSelectionListener;
 public class Client {
 
 	private JFrame frame;
+	private JFrame authenticator;
+	
 	private JLabel receiverlbl;
 	private JLabel subjectlbl;
 	
@@ -42,19 +50,101 @@ public class Client {
 	private static final String TO_STR      = "To          :";
 	private static final String SUBJECT_STR = "Subject     :";
 
-	public Client(String username, String password) {
+	public Client() {
 
-		this.username = username;
-		this.password = password;
 		
-		frame = new JFrame("Email Client");
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		Component contents = createComponents();
-		frame.getContentPane().add(contents);
+		authenticator = new JFrame("Login");
+		
+		Component authenticatorContents = createAuthenticatorComponents();
+		authenticator.getContentPane().add(authenticatorContents);
+		
+		authenticator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		authenticator.pack();
+		authenticator.setLocationRelativeTo(null);
+		authenticator.setVisible(true);
+		
+	}
 
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
+	private Component createAuthenticatorComponents() {
+		String lookAndFeel = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
+		try {
+			UIManager.setLookAndFeel(lookAndFeel);
+		} catch (Exception e) {
+
+		}
+
+		JPanel main = new JPanel();
+		main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
+		main.setBorder(new EmptyBorder(10, 10, 10, 10) );
+		
+		// Add Username
+		JPanel uPanel = new JPanel();
+		uPanel.setLayout(new BoxLayout(uPanel, BoxLayout.X_AXIS));
+		
+		JTextField dummy = new JTextField("123456789012345@aaaaaaaa.com");
+		
+		JLabel unamelbl = new JLabel("Username");
+		unamelbl.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		uPanel.add(unamelbl);
+		final JTextField uname = new JTextField();
+		uname.setPreferredSize(dummy.getPreferredSize());
+		uPanel.add(uname);
+
+		main.add(uPanel);
+		
+		// Add Password
+		JPanel pPanel = new JPanel();
+		pPanel.setLayout(new BoxLayout(pPanel, BoxLayout.X_AXIS));
+		
+		JLabel passlbl = new JLabel("Password");
+		passlbl.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		pPanel.add(passlbl);
+		final JPasswordField pass = new JPasswordField();
+		pass.setPreferredSize(dummy.getPreferredSize());
+		pPanel.add(pass);
+		
+		main.add(pPanel);
+		
+		// Add buttons
+		JPanel bPanel = new JPanel();
+		bPanel.setLayout(new BoxLayout(bPanel, BoxLayout.X_AXIS));
+		
+		JButton login = new JButton("Login");
+		login.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				username = uname.getText();
+				password = pass.getText();
+				
+				if(isAuthenticated(username, password)) {
+					authenticator.dispose();
+					frame = new JFrame("Email Client");
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+					Component contents = createComponents();
+					frame.getContentPane().add(contents);
+			
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frame.pack();
+					frame.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "Invalid Username / password");
+				}
+			}
+		});
+		bPanel.add(login);
+		
+		main.add(bPanel);
+		
+		return main;
+	}
+
+	public boolean isAuthenticated(String username, String password) {
+		if(username.equals("Kedar") && password.equals("Kedar")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private Component createComponents() {
@@ -294,7 +384,7 @@ public class Client {
 	}
 	
 	public static void main(String[] args) {
-		new Client("krc9698@rit.edu", "1234");
+		new Client();
 	}
 
 }
