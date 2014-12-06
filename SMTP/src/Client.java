@@ -289,7 +289,7 @@ public class Client {
 	public void getEmail() {
 		listModel.clear();
 		for(int i = 0; i < 100; i++) {
-			listModel.addElement(new Email("Sender" + (i + 1) * 8, "" + (i + 1) * 9561, "04-12-2014"));
+			listModel.addElement(new Email("Sender" + (i + 1) * 8, "TO" + (i + 1), "" + (i + 1) * 9561, "04-12-2014", "someContent" + i));
 		}
 	}
 	
