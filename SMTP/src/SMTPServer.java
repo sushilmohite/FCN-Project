@@ -9,9 +9,12 @@ import java.net.UnknownHostException;
 
 public class SMTPServer {
 
+	static String data = "From: Sushil Mohite <spm6749@cs.rit.edu>\r\nDate: Sun, 30 Nov 2014 00:38:50 +0000\r\nSubject: Haha\r\nTo: \"Kedarnath Calangutkar\" <krc9698@cs.rit.edu>\r\n\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\nHello Kedarnath\r\n\r\nHow are you?\r\n\r\nRegards,\r\nSushil Mohite\r\n\r\n";
+	
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws UnknownHostException, IOException {
-		Socket socket = new Socket("smtp.gmail.com", 25);
+		
+		Socket socket = new Socket("mailhost.cs.rit.edu", 25);
 		BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
@@ -22,25 +25,24 @@ public class SMTPServer {
 		String welcome = in.readLine();
 		System.out.println(welcome);
 		
-		out.println("STARTTLS");
-		System.out.println("STARTTLS");
-		
-		System.out.println("MAIL From:<" + "fussion21@gmail.com" + ">");
-		out.println("MAIL From:<" + "fussion21@gmail.com" + ">");
+		System.out.println("MAIL From:<" + "spm6749@cs.rit.edu" + ">");
+		out.println("MAIL From:<" + "spm6749@cs.rit.edu" + ">");
 		String senderOK = in.readLine();
 		System.out.println(senderOK);
-		System.out.println("RCPT TO:<" + "fussion21@gmail.com" + ">");
-		out.println("RCPT TO:<" + "fussion21@gmail.com" + ">");
+		System.out.println("RCPT TO:<" + "krc9698@cs.rit.edu" + ">");
+		out.println("RCPT TO:<" + "krc9698@cs.rit.edu" + ">");
 		String recipientOK = in.readLine();
 		System.out.println(recipientOK);
 		System.out.println("DATA");
 		out.println("DATA");
+		String datainput = in.readLine();
+		System.out.println(datainput);
 		//String line;
 		/*while ((line = msg.readLine()) != null) {
 			out.println(line);
 		}*/
-		out.println("Hi Kedar");
-		System.out.println("Hi Kedar");
+		System.out.println(data);
+		out.println(data);
 		System.out.println(".");
 		out.println(".");
 		String acceptedOK = in.readLine();
