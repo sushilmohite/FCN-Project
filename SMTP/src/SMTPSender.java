@@ -32,11 +32,13 @@ public class SMTPSender {
 		while(sc.hasNextLine()) {
 			String line = sc.nextLine();
 			System.out.println("You   : " + line);
-			if(!line.equals("+"))
+			if(!line.equals("1"))
 				out.println(line);
-			System.out.print("Server: ");
-			command = in.readLine();
-			System.out.println(command);
+			if(!line.contains("111")) {
+				System.out.print("Server: ");
+				command = in.readLine();
+				System.out.println(command);
+			}
 		}
 		
 		sc.close();
