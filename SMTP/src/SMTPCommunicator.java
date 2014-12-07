@@ -43,6 +43,7 @@ public class SMTPCommunicator extends Thread {
 				String password = (String) in.readObject();
 				
 				// Authenticate
+				
 				out.println("1");
 				
 				Email email = (Email) in.readObject();
