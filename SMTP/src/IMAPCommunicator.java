@@ -5,12 +5,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class SMTPCommunicator extends Thread {
+public class IMAPCommunicator extends Thread {
 
 	private final static int PORT = 1055;
 	private ArrayBlockingQueue<Email> emailQueue;
 	
-	public SMTPCommunicator(ArrayBlockingQueue<Email> emailQueue) {
+	public IMAPCommunicator(ArrayBlockingQueue<Email> emailQueue) {
 		this.emailQueue = emailQueue;
 	}
 	
