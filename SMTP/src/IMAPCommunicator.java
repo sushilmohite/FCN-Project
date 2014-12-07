@@ -5,22 +5,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class IMAPCommunicator extends Thread {
+public class IMAPCommunicator {
 
-	private final static int PORT = 1055;
-	private ArrayBlockingQueue<Email> emailQueue;
+	private final static int PORT = 993;
 	
-	public IMAPCommunicator(ArrayBlockingQueue<Email> emailQueue) {
-		this.emailQueue = emailQueue;
-	}
+	public IMAPCommunicator() {}
 	
-	public void run() {
+	public void start() {
 		try {
 			ServerSocket ss = new ServerSocket(PORT);
 			
 			while (true) {
 				new HandleRequest(ss.accept()).start();
 			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -45,10 +43,6 @@ public class IMAPCommunicator extends Thread {
 				// Authenticate
 				
 				out.println("1");
-				
-				Email email = (Email) in.readObject();
-				emailQueue.add(email);
-				emailQueue.notify();
 					
 			} catch (IOException e) {
 				System.err.println(e.getMessage());
