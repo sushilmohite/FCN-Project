@@ -7,7 +7,8 @@ import java.net.Socket;
 import java.util.Scanner;
 
 
-public class SMTPReceiver {
+public class SMTPReceiver extends Thread {
+	
 	public static void main(String[] args) throws IOException {
 		ServerSocket ss = new ServerSocket(25);
 		Socket socket = ss.accept();
