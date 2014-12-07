@@ -57,11 +57,14 @@ public class Client {
 	
 	// Database connectivity parameters
 	public static String dbServerIP = "krc9698.wireless.rit.edu";
-	public static String schema = "try";
-	//public static String username = "kedar";
-	//public static String password = "kedar";
+	public static String schema = "fcn";
+	public static String dbuser = "kedar";
+	public static String dbpass = "kedar";
 	public static String driver = "com.mysql.jdbc.Driver";
 	public static String connectionURL = "jdbc:mysql://" + dbServerIP + "/" + schema;
+	
+	// SMTPCommunicator connectivity parameters
+	private final static int PORT = 1055;
 
 	public Client() {
 
@@ -153,17 +156,12 @@ public class Client {
 	}
 
 	public boolean isAuthenticated(String username, String password) {
-		/*if(username.equals("Kedar") && password.equals("Kedar")) {
-			return true;
-		} else {
-			return false;
-		}*/
 		String storedPassword = null;
 		try {
 			Class.forName(driver);
 		
 			//Getting a connection to the database. Change the URL parameters
-			Connection connection = DriverManager.getConnection(connectionURL, username, password);
+			Connection connection = DriverManager.getConnection(connectionURL, dbuser, dbpass);
 			//Creating a statement object
 			Statement statement = connection.createStatement();
 			//Executing the query and getting the result set
@@ -176,16 +174,13 @@ public class Client {
 				// Should not happen
 				System.err.println("Multiple entries found!");
 			}
-
-		//close the resultset, statement and connection.
+			
 			rs.close();
 			statement.close();
 			connection.close();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -433,6 +428,7 @@ public class Client {
 	}
 	
 	public static void main(String[] args) {
+		
 		new Client();
 	}
 
