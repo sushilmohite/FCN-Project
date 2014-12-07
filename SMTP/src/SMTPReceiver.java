@@ -10,7 +10,7 @@ public class SMTPReceiver {
 
 	private final static int PORT = 25;
 	
-	public void run() {
+	public void startReceiver() {
 		try {
 			ServerSocket ss = new ServerSocket(PORT);
 			
