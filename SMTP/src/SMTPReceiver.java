@@ -6,8 +6,42 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
+public class SMTPReceiver {
 
-public class SMTPReceiver extends Thread {
+	private final static int PORT = 25;
+	
+	public void run() {
+		try {
+			ServerSocket ss = new ServerSocket(PORT);
+			
+			while(true) {
+				new HandleRequest(ss.accept()).start();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private class HandleRequest extends Thread {
+		
+		private Socket socket;
+		private BufferedReader in;
+		private PrintWriter out;
+		
+		public HandleRequest(Socket socket) {
+			this.socket = socket;
+			try {
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				out = new PrintWriter(socket.getOutputStream(), true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		public void run() {
+			
+		}
+	}
 	
 	public static void main(String[] args) throws IOException {
 		ServerSocket ss = new ServerSocket(25);
