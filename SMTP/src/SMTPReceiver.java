@@ -126,13 +126,21 @@ public class SMTPReceiver {
 			System.out.println(date);
 			System.out.println(content);
 			
-			mailTo = mailTo.substring(toString.length());
-			mailTo = mailTo.substring(0, mailTo.indexOf('@'));
-			System.out.println("mailTo: " + mailTo);
+			mailTo = mailTo.substring(toString.length(), mailTo.indexOf('@'));
+			mailFrom = mailFrom.substring(mailFrom.indexOf('<') + 1, mailFrom.indexOf('>'));
+			subject = subject.substring(subjectString.length());
+			date = date.substring(dateString.length());
+			
+			System.out.println("-----");
+			System.out.println(mailFrom);
+			System.out.println(mailTo);
+			System.out.println(subject);
+			System.out.println(date);
 			
 			if (DBCommunicator.isUser(mailTo)) {
 				Email email = new Email(mailFrom, mailTo, subject, date, content);
-				DBCommunicator.saveEmail(email);
+				//DBCommunicator.saveEmail(email);
+				System.out.println("Email saved");
 			}
 		}
 	}

@@ -53,7 +53,7 @@ public class DBCommunicator {
 			//Creating a statement object
 			Statement statement = connection.createStatement();
 			//Executing the query and getting the result set
-			ResultSet rs = statement.executeQuery("SELECT * FROM " + "fcn.user_info" + " WHERE username = '" + "username" + "'");
+			ResultSet rs = statement.executeQuery("SELECT * FROM " + "fcn.user_info" + " WHERE username = '" + userName + "'");
 			//Iterating the resultset and get the appId
 			if(rs.next()) {
 				exists = true;
