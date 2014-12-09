@@ -125,6 +125,15 @@ public class SMTPReceiver {
 			System.out.println(subject);
 			System.out.println(date);
 			System.out.println(content);
+			
+			mailTo = mailTo.substring(toString.length());
+			mailTo = mailTo.substring(0, mailTo.indexOf('@'));
+			System.out.println("mailTo: " + mailTo);
+			
+			if (DBCommunicator.isUser(mailTo)) {
+				Email email = new Email(mailFrom, mailTo, subject, date, content);
+				DBCommunicator.saveEmail(email);
+			}
 		}
 	}
 }
