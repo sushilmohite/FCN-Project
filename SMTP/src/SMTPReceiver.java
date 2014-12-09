@@ -10,7 +10,7 @@ public class SMTPReceiver {
 
 	private final static int PORT = 25;
 	
-	public void startReceiver() {
+	public void start() {
 		try {
 			ServerSocket ss = new ServerSocket(PORT);
 			
@@ -40,35 +40,91 @@ public class SMTPReceiver {
 		
 		public void run() {
 			
-		}
-	}
-	
-	public static void main(String[] args) throws IOException {
-		ServerSocket ss = new ServerSocket(25);
-		Socket socket = ss.accept();
-		System.out.println("Connected!");
-
-		BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-		
-		Scanner sc = new Scanner(System.in);
-		
-		String lastCommand = "";
-		while(sc.hasNext()) {
-			String line = sc.nextLine();
-			out.println(line);
-			String command = in.readLine();
-			System.out.println(lastCommand);
-			if(lastCommand.equals("DATA")){
-				while(!command.equals(".")) {
-					command = in.readLine();
-					System.out.println(command);
+			String mailFrom = "";
+			String mailTo = "";
+			String body = "";
+			String subject = "";
+			String date = "";
+			String content = "";
+			String boundary = "";
+			String contentString = "Content-Type: ";
+			String subjectString = "Subject: ";
+			String fromString = "From: ";
+			String toString = "To: ";
+			String dateString = "Date: ";
+			
+			try {
+				out.println(220);
+				in.readLine();
+				
+				out.println(250);
+				in.readLine();
+				
+				out.println(250);
+				in.readLine();
+				
+				out.println(250);
+				if (in.readLine().equalsIgnoreCase("data")) {
+					out.println(354);
+					String input;
+					while(!(input = in.readLine()).equals(".")) {
+						body += input + "\n";
+					}
+					out.println(250);
+				}
+				
+				if (in.readLine().equalsIgnoreCase("quit")) {
+					out.println(221);
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					out.close();
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
-			lastCommand = command;
+			
+			Scanner sc = new Scanner(body);
+			while(sc.hasNextLine()) {
+				String input = sc.nextLine();
+				if (input.startsWith(fromString)) {
+					mailFrom = input;
+				}
+				if (input.startsWith(toString)) {
+					mailTo = input;
+				}
+				if (input.startsWith(subjectString)) {
+					subject = input;
+				}
+				if (input.startsWith(dateString)) {
+					date = input;
+				}
+				if (input.startsWith(contentString)) {
+					int n = input.indexOf("boundary");
+					boundary = input.substring(n + 9);
+				}
+				if (boundary != "") {
+					if (input.startsWith("--" + boundary)) {
+						sc.nextLine();
+						while (!(input = sc.nextLine()).startsWith("--" + boundary)) {
+							content += input + "\n";
+						}
+						break;
+					}
+				}
+			}
+			
+			sc.close();
+			
+			System.out.println(mailFrom);
+			System.out.println(mailTo);
+			System.out.println(subject);
+			System.out.println(date);
+			System.out.println(content);
 		}
-		
-		sc.close();
-		ss.close();
 	}
 }
