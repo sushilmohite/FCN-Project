@@ -138,7 +138,7 @@ public class SMTPReceiver {
 			System.out.println(date);
 			
 			if (DBCommunicator.isUser(mailTo)) {
-				Email email = new Email(mailFrom, mailTo, subject, date, content);
+				//Email email = new Email(mailFrom, mailTo, subject, date, content);
 				//DBCommunicator.saveEmail(email);
 				System.out.println("Email saved");
 			}
