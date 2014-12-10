@@ -31,7 +31,7 @@ public class ClientUtil {
 	public static final String GMAIL_SMTP_HOST_NAME = "smtp.gmail.com";
 	
 	public static final int OUR_SMTP_PORT = 25;
-	public static final String OUR_HOST_NAME = "krc9698.wireless.rit.edu";
+	public static final String OUR_SMTP_HOST_NAME = "krc9698.wireless.rit.edu";
 	
 	// Domain names
 	public static final String OUR_DOMAIN = "krc9698.wireless.rit.edu";
