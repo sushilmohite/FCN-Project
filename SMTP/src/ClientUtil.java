@@ -1,27 +1,23 @@
+/**
+ * ClientUtil.java
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ */
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Scanner;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
-
+/**
+ * ClientUtil class assists the Client class with the authentication
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ */
 public class ClientUtil {
-	
-	// Database connectivity parameters
-	public static String dbServerIP = "krc9698.wireless.rit.edu";
-//	private static String dbServerIP = "localhost";
-	private static String schema = "fcn";
-	private static String dbuser = "kedar";
-	private static String dbpass = "kedar";
-	private static String driver = "com.mysql.jdbc.Driver";
-	private static String connectionURL = "jdbc:mysql://" + dbServerIP + "/" + schema;
 	
 	// IMAPCommunicator connectivity parameters
 	public static final int GMAIL_IMAP_PORT = 993;
@@ -29,7 +25,6 @@ public class ClientUtil {
 
 	public static final int OUR_IMAP_PORT = 143;
 	public static final String OUR_IMAP_HOST_NAME = "krc9698.wireless.rit.edu";
-//	public static final String OUR_IMAP_HOST_NAME = "localhost";
 	
 	// SMTP Receiver connectivity parameters
 	public static final int GMAIL_SMTP_PORT = 465;
@@ -40,11 +35,7 @@ public class ClientUtil {
 	
 	// Domain names
 	public static final String OUR_DOMAIN = "krc9698.wireless.rit.edu";
-//	public static final String OUR_DOMAIN = "localhost";
 	public static final String GMAIL_DOMAIN = "gmail.com";
-	
-	// Tables
-	public static final String USER_TABLE = "fcn.user_info";
 	
 	public static boolean isAuthenticated(String username, String password) {
 		

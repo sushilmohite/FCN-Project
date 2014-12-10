@@ -1,20 +1,25 @@
-import java.io.BufferedReader;
+/**
+ * IMAP Communicator
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi 
+ */
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Scanner;
 
-import javax.net.ssl.SSLServerSocket;
-import javax.net.ssl.SSLServerSocketFactory;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-
+/**
+ * IMAPCommunicator class extracts the emails from the database via DBCommunicator
+ * and transfers them to the client using IMAP protocols
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ */
 public class IMAPCommunicator extends Thread {
 
+	// Port for IMAP
 	private final static int PORT = 143;
 
 	public void run() {
@@ -39,7 +44,6 @@ public class IMAPCommunicator extends Thread {
 		private Socket socket;
 		private Scanner in;
 		private PrintWriter out;
-		private Email[] selectedEmails;
 		private Email[] emails = null;
 
 		public HandleRequest(Socket socket) {
@@ -82,12 +86,8 @@ public class IMAPCommunicator extends Thread {
 			System.out.println("Fetching mails for: " + username);
 			if(line.contains("examine")) {
 				emails = DBCommunicator.fetchEmails(username);
-				selectedEmails = null;
-//				emails = new Email[2];
-//				emails[0] = new Email("fussion21@gmail.com","sushil@krc9698.wireless.rit.edu","Hello","Dec 10","Content1");
-//				emails[1] = new Email("fussion21@gmail.com","sushil@krc9698.wireless.rit.edu","Hey","Dec 10","Content2");
 			} else if(line.contains("select")) {
-				selectedEmails = emails = DBCommunicator.fetchEmails(username);
+				emails = DBCommunicator.fetchEmails(username);
 				updateSeen();
 				return;
 			}
@@ -115,7 +115,6 @@ public class IMAPCommunicator extends Thread {
 			out.println("a4 OK Success");
 			
 			word = in.nextLine().split(" ");
-			//"a fetch " + start + ":" +  end + " flags");
 			index = word[2].split(":");
 			start = Integer.parseInt(index[0]);
 			end = Integer.parseInt(index[1]);
@@ -128,7 +127,6 @@ public class IMAPCommunicator extends Thread {
 			}
 			
 			line = in.nextLine();
-			//a5 logout
 			
 			in.close();
 			out.close();
@@ -137,7 +135,6 @@ public class IMAPCommunicator extends Thread {
 
 		private void updateSeen() {
 			String line = in.nextLine();
-			//out.println("a4 store " + id + " +FLAGS (\\Seen)");
 			if(!line.contains("store")) {
 				return;
 			}

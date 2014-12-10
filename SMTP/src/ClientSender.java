@@ -1,3 +1,8 @@
+/**
+ * ClientSender.java
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ */
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -8,6 +13,11 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.xml.bind.DatatypeConverter;
 
+/**
+ * ClientSender class handles communication from the Client
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ */
 public class ClientSender {
 
 	private String username;
@@ -35,7 +45,7 @@ public class ClientSender {
 				System.out.println("connecting to gmail");
 				SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 				SSLSocket s= (SSLSocket) factory.createSocket(ClientUtil.GMAIL_SMTP_HOST_NAME, ClientUtil.GMAIL_SMTP_PORT);
-//				s.startHandshake();
+				s.startHandshake();
 				socket = s;
 			}
 			scanner = new Scanner(socket.getInputStream());

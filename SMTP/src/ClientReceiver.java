@@ -1,3 +1,9 @@
+/**
+ * ClientReceiver.java
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi 
+ */
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -6,7 +12,11 @@ import java.util.Scanner;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
-
+/**
+ * ClientReceiver class handles incoming communications to the Client
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ */
 public class ClientReceiver {
 	
 	private String username;
@@ -35,8 +45,6 @@ public class ClientReceiver {
 		}
         
 		scanner.nextLine();
-//		String username = "sksfcnproj@gmail.com";
-//		String password = "fcnproj123";
 		out.println("a1 login " + username + " " + password);
 		
 		scanner.nextLine();
@@ -77,8 +85,6 @@ public class ClientReceiver {
 		}
         
 		scanner.nextLine();
-//		String username = "sksfcnproj@gmail.com";
-//		String password = "fcnproj123";
 		out.println("a1 login " + username + " " + password);
 		
 		scanner.nextLine();
@@ -123,7 +129,7 @@ public class ClientReceiver {
 					data.append(line + "<br/>");
 					if(line.startsWith(fromString)) {
 						from = line.substring(fromString.length());
-						System.out.println(">>>>>>>>>>>" + fromString + from);
+						System.out.println(fromString + from);
 					}
 					if(line.startsWith(toString)) {
 						to = line.substring(toString.length());
@@ -155,8 +161,6 @@ public class ClientReceiver {
 							System.out.println(contentHTML);
 							continue;
 						}
-//						Thread.sleep(200);
-//						System.out.println("> " + contentLine);
 						contentBuilder.append(line);
 					}
 					if(line.startsWith("Content-Type: text/html")) {
@@ -173,8 +177,6 @@ public class ClientReceiver {
 							System.out.println("Content = " + content);
 							continue;
 						}
-//						Thread.sleep(200);
-//						System.out.println(">? " + contentLine);
 						contentBuilder.append(line + "<br/>");
 					}
 					if(line.startsWith("Content-Type: text/plain")) {
@@ -197,7 +199,6 @@ public class ClientReceiver {
 		System.out.println("Done reading");
 		index = 0;
 		String line;
-//		while(!((line = scanner.nextLine()).contains("Success")));
 		out.println("a fetch " + start + ":" +  end + " flags");
 		for(index = 0; index < length; index++) {
 			line = scanner.nextLine();
