@@ -6,11 +6,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class SMTPReceiver {
+public class SMTPReceiver extends Thread {
 
 	private final static int PORT = 25;
 	
-	public void start() {
+	public void run() {
 		try {
 			ServerSocket ss = new ServerSocket(PORT);
 			
@@ -72,6 +72,10 @@ public class SMTPReceiver {
 					out.println(354);
 					String input;
 					while(!(input = in.readLine()).equals(".")) {
+						if (input.startsWith(fromString)) {
+							input.replaceAll("<", "");
+							input.replaceAll(">", "");
+						}
 						body += input + "\n";
 					}
 					out.println(250);
@@ -134,15 +138,16 @@ public class SMTPReceiver {
 			System.out.println(body);
 			
 			mailTo = mailTo.substring(toString.length(), mailTo.indexOf('@'));
+			
 			mailFrom = mailFrom.substring(mailFrom.indexOf('<') + 1, mailFrom.indexOf('>'));
 			subject = subject.substring(subjectString.length());
 			date = date.substring(dateString.length());
 			
 			System.out.println("-----");
-			System.out.println(mailFrom);
-			System.out.println(mailTo);
-			System.out.println(subject);
-			System.out.println(date);
+			System.out.println("new mailfrom = " + mailFrom);
+			System.out.println("new mailto = " + mailTo);
+			System.out.println("new subject = " + subject);
+			System.out.println("new date = " + date);
 			
 			if (DBCommunicator.isUser(mailTo)) {
 				Email email = new Email(mailFrom, mailTo, subject, date, body);

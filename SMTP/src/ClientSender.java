@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -24,15 +25,18 @@ public class ClientSender {
 			return false;
 		}
 
-		SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-		SSLSocket socket = null;
+		Socket socket = null;
 		Scanner scanner = null;
 		PrintWriter out = null;
 		try {
 			if(email.getTo().contains(ClientUtil.OUR_DOMAIN)) {
-				socket = (SSLSocket) factory.createSocket(ClientUtil.OUR_SMTP_HOST_NAME, ClientUtil.OUR_SMTP_PORT);
+				socket = new Socket(ClientUtil.OUR_SMTP_HOST_NAME, ClientUtil.OUR_SMTP_PORT);
 			} else if(email.getTo().contains(ClientUtil.GMAIL_DOMAIN)) {
-				socket = (SSLSocket) factory.createSocket(ClientUtil.GMAIL_SMTP_HOST_NAME, ClientUtil.GMAIL_SMTP_PORT);
+				System.out.println("connecting to gmail");
+				SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+				SSLSocket s= (SSLSocket) factory.createSocket(ClientUtil.GMAIL_SMTP_HOST_NAME, ClientUtil.GMAIL_SMTP_PORT);
+//				s.startHandshake();
+				socket = s;
 			}
 			scanner = new Scanner(socket.getInputStream());
 			out = new PrintWriter(socket.getOutputStream(), true);
@@ -59,14 +63,16 @@ public class ClientSender {
 		scanner.nextLine();
 		
 		String body = "";
-		body += "From: " + email.getFrom() + "\n";
-		body += "To: " + email.getTo() + "\n";
-		body += "Subject: " + email.getSubject() + "\n";
-		body += "Date: " + new Date().toString() + "\n";
-		body += "Content-Type: " + "boundary=1234" + "\n";
-		body += "--1234" + "\n";
-		body += email.getHTMLContent() + "\n";
-		body += "--1234" + "\n";
+		body += "From: <" + email.getFrom() + ">\r\n";
+		body += "To: " + email.getTo() + "\r\n";
+		body += "Subject: " + email.getSubject() + "\r\n";
+		body += "Date: " + new Date().toString() + "\r\n";
+		body += "Content-Type:  text/html" + " boundary=1234" + "\r\n";
+		body += "--12345" + "\r\n";
+		body += email.getContent() + "\r\n";
+		body += "--12345" + "\r\n";
+		
+		System.out.println(body);
 		
 		Scanner scanContent = new Scanner(body);
 		while(scanContent.hasNextLine()) {
@@ -79,6 +85,11 @@ public class ClientSender {
 		
 		out.println("quit");
 		
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		scanner.close();
 		out.close();
 		

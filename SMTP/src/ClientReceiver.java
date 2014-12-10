@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.Scanner;
 
 import javax.net.ssl.SSLSocket;
@@ -17,15 +18,15 @@ public class ClientReceiver {
 	}
 
 	public void updateSeenStatus(int id) {
-		SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-		SSLSocket socket = null;
+		Socket socket = null;
 		Scanner scanner = null;
 		PrintWriter out = null;
 		try {
 			if(username.contains(ClientUtil.OUR_DOMAIN)) {
-				socket = (SSLSocket) factory.createSocket(ClientUtil.OUR_DOMAIN, ClientUtil.IMAP_PORT);
+				socket = new Socket(ClientUtil.OUR_IMAP_HOST_NAME, ClientUtil.OUR_IMAP_PORT);
 			} else if(username.contains(ClientUtil.GMAIL_DOMAIN)) {
-				socket = (SSLSocket) factory.createSocket(ClientUtil.GMAIL_IMAP_HOST_NAME, ClientUtil.IMAP_PORT);
+				SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+				socket = factory.createSocket(ClientUtil.GMAIL_IMAP_HOST_NAME, ClientUtil.GMAIL_IMAP_PORT);
 			}
 			scanner = new Scanner(socket.getInputStream());
 			out = new PrintWriter(socket.getOutputStream(), true);
@@ -44,11 +45,14 @@ public class ClientReceiver {
 		}
 
 		out.println("a3 select INBOX");
+		System.out.println("a4 store " + id + " +FLAGS (\\Seen)");
 		out.println("a4 store " + id + " +FLAGS (\\Seen)");
 
-		while(!(scanner.nextLine().contains("Success")));
-		System.out.println("a4 store " + id + " +FLAGS (\\Seen)");
-		System.out.println(scanner.nextLine());
+		String line;
+		while(!((line = scanner.nextLine()).contains("Success"))) {
+			System.out.println(line);
+		}
+		System.out.println("a5 logout");
 		
 		out.println("a5 logout");
 	
@@ -56,15 +60,15 @@ public class ClientReceiver {
 	
 	public Email[] fetchEmail() {
 
-		SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-		SSLSocket socket = null;
+		Socket socket = null;
 		Scanner scanner = null;
 		PrintWriter out = null;
 		try {
 			if(username.contains(ClientUtil.OUR_DOMAIN)) {
-				socket = (SSLSocket) factory.createSocket(ClientUtil.OUR_DOMAIN, ClientUtil.IMAP_PORT);
+				socket = new Socket(ClientUtil.OUR_IMAP_HOST_NAME, ClientUtil.OUR_IMAP_PORT);
 			} else if(username.contains(ClientUtil.GMAIL_DOMAIN)) {
-				socket = (SSLSocket) factory.createSocket(ClientUtil.GMAIL_IMAP_HOST_NAME, ClientUtil.IMAP_PORT);
+				SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+				socket = (SSLSocket) factory.createSocket(ClientUtil.GMAIL_IMAP_HOST_NAME, ClientUtil.GMAIL_IMAP_PORT);
 			}
 			scanner = new Scanner(socket.getInputStream());
 			out = new PrintWriter(socket.getOutputStream(), true);
@@ -95,6 +99,7 @@ public class ClientReceiver {
 		int start = length - 25 > 0 ? length - 25 : 1;
 		int end = length;
 		out.println("a4 fetch " + start + ":" + end + " BODY[]");
+		System.out.println();
 
 		scanner.findWithinHorizon("(\\* " + start + " FETCH \\(BODY\\[\\])", 0);
 		int index = 0;;
@@ -118,7 +123,7 @@ public class ClientReceiver {
 					data.append(line + "<br/>");
 					if(line.startsWith(fromString)) {
 						from = line.substring(fromString.length());
-						System.out.println(fromString + from);
+						System.out.println(">>>>>>>>>>>" + fromString + from);
 					}
 					if(line.startsWith(toString)) {
 						to = line.substring(toString.length());
@@ -165,7 +170,7 @@ public class ClientReceiver {
 						if(boundary != null && line.contains(boundary)) {
 							dataType = "";
 							content = contentBuilder.toString();
-							System.out.println(content);
+							System.out.println("Content = " + content);
 							continue;
 						}
 //						Thread.sleep(200);
@@ -188,7 +193,8 @@ public class ClientReceiver {
 			emails[index++] = new Email(i, from, to, subject, timestamp, content == null ? contentHTML : content );
 			
 		}
-		
+
+		System.out.println("Done reading");
 		index = 0;
 		String line;
 //		while(!((line = scanner.nextLine()).contains("Success")));
@@ -210,7 +216,12 @@ public class ClientReceiver {
 		System.out.println("a5 logout");
 		out.println("a5 logout");
 		for(int i = 0; i < length; i++) {
-			//System.out.println(emails[i]);
+			System.out.println(emails[i]);
+		}
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		scanner.close();
 		out.close();

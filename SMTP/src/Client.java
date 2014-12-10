@@ -42,6 +42,7 @@ public class Client {
 
 	private JFrame frame;
 	private JFrame authenticator;
+	private JFrame composer;
 
 	private JLabel receiverlbl;
 	private JLabel subjectlbl;
@@ -60,10 +61,11 @@ public class Client {
 	private static final String TO_STR      = "To          :";
 	private static final String SUBJECT_STR = "Subject     :";
 	
-	private static final String DEFAULT_USERNAME = "sushil@krc9698.wireless.rit.edu";
+	private static final String DEFAULT_USERNAME = "kedar@krc9698.wireless.rit.edu";
 	private static final String DEFAULT_PASSWORD = "fcn";
 	
 	private ClientReceiver clientReceiver;
+	private ClientSender clientSender;
 
 	public Client() {
 
@@ -133,9 +135,10 @@ public class Client {
 				username = uname.getText();
 				password = new String(pass.getPassword());
 				
-				//if(ClientUtil.isAuthenticated(username, password)) {
+				if(ClientUtil.isAuthenticated(username, password)) {
 					authenticator.dispose();
 					clientReceiver = new ClientReceiver(username, password);
+					clientSender = new ClientSender(username, password);
 					
 					frame = new JFrame("Email Client");
 					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
@@ -146,9 +149,9 @@ public class Client {
 					frame.pack();
 					frame.setVisible(true);
 
-				//} else {
+				} else {
 					JOptionPane.showMessageDialog(null, "Invalid Username / password");
-				//}
+				}
 			}
 		});
 		bPanel.add(login);
@@ -404,7 +407,7 @@ public class Client {
 	}
 
 	public void composeMail() {
-		JFrame composer = new JFrame("Compose Mail");
+		composer = new JFrame("Compose Mail");
 
 		Component authenticatorContents = createComposerComponents();
 		composer.getContentPane().add(authenticatorContents);
@@ -498,8 +501,10 @@ public class Client {
 				
 				Email email = new Email(emailFrom, emailTo, emailSubject, emailDate, emailContent);
 				
-				ClientSender clientSender = new ClientSender(username, password);
+				System.out.println("Sending email = " + email);
 				clientSender.sendEmail(email);
+				
+				composer.dispose();
 			}
 		});
 		constraints.gridx = 0;

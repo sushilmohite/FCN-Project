@@ -77,9 +77,17 @@ public class Email implements Serializable, Comparable<Email> {
 		return timestamp;
 	}
 	
+	public String getContent() {
+		if(content != null) {
+			return content;
+		} else {
+			return "";
+		}
+	}
+	
 	public String getHTMLContent() {
 		if(content != null) {
-			return "<html>" + content + "</html>";
+			return "<html> \r\n" + content + "</html>";
 		} else {
 			return "";
 		}
