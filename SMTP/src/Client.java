@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.Scanner;
 
 import javax.net.ssl.SSLSocket;
@@ -59,6 +60,9 @@ public class Client {
 	private static final String TO_STR      = "To          :";
 	private static final String SUBJECT_STR = "Subject     :";
 	
+	private static final String DEFAULT_USERNAME = "sushil@krc9698.wireless.rit.edu";
+	private static final String DEFAULT_PASSWORD = "fcn";
+	
 	private ClientReceiver clientReceiver;
 
 	public Client() {
@@ -98,7 +102,7 @@ public class Client {
 		JLabel unamelbl = new JLabel("Username");
 		unamelbl.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		uPanel.add(unamelbl);
-		final JTextField uname = new JTextField("sksfcnproj@gmail.com");
+		final JTextField uname = new JTextField(DEFAULT_USERNAME);
 		uname.setPreferredSize(dummy.getPreferredSize());
 		uPanel.add(uname);
 
@@ -111,7 +115,7 @@ public class Client {
 		JLabel passlbl = new JLabel("Password");
 		passlbl.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		pPanel.add(passlbl);
-		final JPasswordField pass = new JPasswordField("fcnproj123");
+		final JPasswordField pass = new JPasswordField(DEFAULT_PASSWORD);
 		pass.setPreferredSize(dummy.getPreferredSize());
 		pPanel.add(pass);
 
@@ -433,7 +437,7 @@ public class Client {
 		constraints.weighty = 2;
 		main.add(receiverlbl, constraints);
 
-		JTextField receiver = new JTextField();
+		final JTextField receiver = new JTextField();
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -457,7 +461,7 @@ public class Client {
 		constraints.weighty = 2;
 		main.add(subjectlbl, constraints);
 
-		JTextField subject = new JTextField();
+		final JTextField subject = new JTextField();
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		constraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -469,7 +473,7 @@ public class Client {
 		main.add(subject, constraints);		
 
 		// Add content
-		JTextArea content = new JTextArea();
+		final JTextArea content = new JTextArea();
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.fill = GridBagConstraints.BOTH;
@@ -482,6 +486,22 @@ public class Client {
 		
 		// Add content
 		JButton send = new JButton("Send");
+		send.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String emailFrom = username;
+				String emailTo = receiver.getText();
+				String emailSubject = subject.getText();
+				String emailDate = new Date().toString();
+				String emailContent = content.getText();
+				
+				Email email = new Email(emailFrom, emailTo, emailSubject, emailDate, emailContent);
+				
+				ClientSender clientSender = new ClientSender(username, password);
+				clientSender.sendEmail(email);
+			}
+		});
 		constraints.gridx = 0;
 		constraints.gridy = 3;
 		constraints.fill = GridBagConstraints.BOTH;
