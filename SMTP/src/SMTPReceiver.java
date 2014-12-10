@@ -1,3 +1,9 @@
+/**
+ * File: SMTPReceiver.java
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -6,6 +12,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * This class listens for new connections
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ *
+ */
 public class SMTPReceiver extends Thread {
 
 	private final static int PORT = 25;
@@ -22,6 +33,11 @@ public class SMTPReceiver extends Thread {
 		}
 	}
 	
+	/**
+	 * A new object of this class is created for every connection established
+	 * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+	 *
+	 */
 	private class HandleRequest extends Thread {
 		
 		private Socket socket;
@@ -45,9 +61,6 @@ public class SMTPReceiver extends Thread {
 			String body = "";
 			String subject = null;
 			String date = null;
-			//String content = "";
-			//String boundary = "";
-			//String contentString = "Content-Type: ";
 			String subjectString = "Subject: ";
 			String fromString = "From: ";
 			String toString = "To: ";
@@ -114,29 +127,11 @@ public class SMTPReceiver extends Thread {
 				if ((mailFrom != null) && (mailTo != null) && (subject != null) && (date != null)) {
 					break;
 				}
-				/*if (input.startsWith(contentString)) {
-					int n = input.indexOf("boundary");
-					boundary = input.substring(n + 9);
-				}*/
-				/*if (boundary != "") {
-					if (input.startsWith("--" + boundary)) {
-						sc.nextLine();
-						while (!(input = sc.nextLine()).startsWith("--" + boundary)) {
-							content += input + "\n";
-						}
-						break;
-					}
-				}*/
 			}
 			
 			sc.close();
 			
-			System.out.println(mailFrom);
-			System.out.println(mailTo);
-			System.out.println(subject);
-			System.out.println(date);
-			System.out.println(body);
-			
+			// extracting username from email id
 			mailTo = mailTo.substring(toString.length(), mailTo.indexOf('@'));
 			
 			if(mailFrom.contains(ClientUtil.OUR_DOMAIN)) {
@@ -147,16 +142,9 @@ public class SMTPReceiver extends Thread {
 			subject = subject.substring(subjectString.length());
 			date = date.substring(dateString.length());
 			
-			System.out.println("-----");
-			System.out.println("new mailfrom = " + mailFrom);
-			System.out.println("new mailto = " + mailTo);
-			System.out.println("new subject = " + subject);
-			System.out.println("new date = " + date);
-			
 			if (DBCommunicator.isUser(mailTo)) {
 				Email email = new Email(mailFrom, mailTo, subject, date, body);
 				DBCommunicator.saveEmail(email);
-				System.out.println("Email saved");
 			}
 		}
 	}

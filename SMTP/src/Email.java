@@ -1,5 +1,16 @@
+/**
+ * File: Email.java
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ */
+
 import java.io.Serializable;
 
+/**
+ * This class represents an email template
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ *
+ */
 public class Email implements Serializable, Comparable<Email> {
 
 	private static final long serialVersionUID = 1L;
@@ -11,6 +22,7 @@ public class Email implements Serializable, Comparable<Email> {
 	private String content;
 	private boolean seen;
 
+	// Types of constructors
 	public Email(String from, String to, String subject, String timestamp, String content) {
 		this.from = from;
 		this.to = to;

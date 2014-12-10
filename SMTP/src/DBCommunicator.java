@@ -1,11 +1,22 @@
+/**
+ * File: DBCommunicator.java
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ */
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import java.sql.PreparedStatement;
-
+/**
+ * This class is responsible for communicating with the database
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ *
+ */
 public class DBCommunicator {
 	
 	// Database connectivity parameters
@@ -16,6 +27,11 @@ public class DBCommunicator {
 	public static String driver = "com.mysql.jdbc.Driver";
 	public static String connectionURL = "jdbc:mysql://" + dbServerIP + "/" + schema;
 	
+	/**
+	 * This methods saves the email received
+	 * @param email email to be saved
+	 * @return true if saved else false
+	 */
 	public static boolean saveEmail(Email email) {
 		boolean sent = false;
 		
@@ -45,6 +61,11 @@ public class DBCommunicator {
 		return sent;
 	}
 	
+	/**
+	 * Fetches emails for a user
+0	 * @param username name of the user
+	 * @return list of emails
+	 */
 	public static Email[] fetchEmails(String username) {
 		
 		Email[] email = new Email[0];
@@ -166,9 +187,5 @@ public class DBCommunicator {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public static void main(String[] args) {
-//		setEmailAsSeen(1);
 	}
 }
