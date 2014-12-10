@@ -10,6 +10,15 @@ public class Email implements Serializable, Comparable<Email> {
 	private String timestamp;
 	private String content;
 	private boolean seen;
+
+	public Email(String from, String to, String subject, String timestamp, String content) {
+		this.from = from;
+		this.to = to;
+		this.subject = subject;
+		this.timestamp = timestamp;
+		this.content = content;
+		this.seen = false;
+	}
 	
 	public Email(int id, String from, String to, String subject, String timestamp, String content) {
 		this.id = id;
@@ -21,18 +30,16 @@ public class Email implements Serializable, Comparable<Email> {
 		this.seen = false;
 	}
 	
-	public Email(int id, String from, String to, String subject, String timestamp, String content, boolean seen) {
-		this.id = id;
-		this.from = from;
-		this.to = to;
-		this.subject = subject;
-		this.timestamp = timestamp;
-		this.content = content;
-		this.seen = seen;
-	}
-	
 	public boolean isSeen() {
 		return seen;
+	}
+	
+	public int getSeen() {
+		if(seen) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 	
 	public void setSeen(boolean seen) {
