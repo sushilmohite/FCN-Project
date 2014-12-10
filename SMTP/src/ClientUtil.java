@@ -32,8 +32,8 @@ public class ClientUtil {
 //	public static final String OUR_IMAP_HOST_NAME = "localhost";
 	
 	// SMTP Receiver connectivity parameters
-	public static final int GMAIL_SMTP_PORT = 587;
-	public static final String GMAIL_SMTP_HOST_NAME = "smtp.gmail.com";
+	public static final int GMAIL_SMTP_PORT = 465;
+	public static final String GMAIL_SMTP_HOST_NAME = "imap.gmail.com";
 	
 	public static final int OUR_SMTP_PORT = 25;
 	public static final String OUR_SMTP_HOST_NAME = "krc9698.wireless.rit.edu";
