@@ -30,6 +30,21 @@ public class Email implements Serializable, Comparable<Email> {
 		this.seen = false;
 	}
 	
+	public Email(int id, String from, String to, String subject, String timestamp, String content, int seen) {
+		this.id = id;
+		this.from = from;
+		this.to = to;
+		this.subject = subject;
+		this.timestamp = timestamp;
+		this.content = content;
+		if (seen == 0) {
+			this.seen = false;
+		}
+		else {
+			this.seen = true;
+		}
+	}
+	
 	public boolean isSeen() {
 		return seen;
 	}
