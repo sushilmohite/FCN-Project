@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.sql.PreparedStatement;
+
 public class DBCommunicator {
 	
 	// Database connectivity parameters
@@ -23,16 +25,25 @@ public class DBCommunicator {
 			//Getting a connection to the database. Change the URL parameters
 			Connection connection = DriverManager.getConnection(connectionURL, dbuser, dbpass);
 			//Creating a statement object
-			Statement statement = connection.createStatement();
-			//Executing the query and getting the result set
-			ResultSet rs = statement.executeQuery("SELECT * FROM " + "fcn.emails" + " WHERE username = '" + "username" + "'");
-			//Iterating the resultset and get the appId
-			if(rs.next()) {
-				sent = true;
-			}
+			PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO fcn.emails (from, to, subject, timestamp, content) VALUES (?, ?, ?, ?, ?)");
 			
-			rs.close();
-			statement.close();
+			//preparedStatement = connection.prepareStatement(insertTableSQL);
+			//preparedStatement.setInt(1, appId);
+			preparedStatement.setString(1, email.getFrom());
+			preparedStatement.setString(2, email.getTo());
+			preparedStatement.setString(3, email.getSubject());
+			preparedStatement.setString(4, email.getTimestamp());
+			preparedStatement.setString(5, email.getHTMLContent());
+			preparedStatement.executeUpdate();
+			//Executing the query and getting the result set
+			//ResultSet rs = statement.executeQuery("INSERT INTO fcn.emails (from, to, subject, timestamp, content) VALUES(" + email.getFrom() + ", " + email.getTo() + ", " + email.getSubject() + ", " + email.getTimestamp() + ", " + email.getHTMLContent() + ")");
+			//Iterating the resultset and get the appId
+			//if(rs.next()) {
+				//sent = true;
+			//}
+			
+			//rs.close();
+			preparedStatement.close();
 			connection.close();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

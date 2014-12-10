@@ -131,7 +131,7 @@ public class SMTPReceiver {
 			System.out.println(mailTo);
 			System.out.println(subject);
 			System.out.println(date);
-			//System.out.println(content);
+			System.out.println(body);
 			
 			mailTo = mailTo.substring(toString.length(), mailTo.indexOf('@'));
 			mailFrom = mailFrom.substring(mailFrom.indexOf('<') + 1, mailFrom.indexOf('>'));
