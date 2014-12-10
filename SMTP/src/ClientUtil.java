@@ -24,7 +24,10 @@ public class ClientUtil {
 	
 	// IMAPCommunicator connectivity parameters
 	public static final int IMAP_PORT = 993;
-	public static final String GMAIL_IMAP_HOST_NAME = "smtp.gmail.com";
+	public static final String GMAIL_IMAP_HOST_NAME = "imap.gmail.com";
+	
+	public static final int SMTP_PORT = 587;
+	public static final String GMAIL_SMTP_HOST_NAME = "smtp.gmail.com";
 	
 	// Domain names
 	public static final String OUR_DOMAIN = "krc9698.wireless.rit.edu";
