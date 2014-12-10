@@ -64,6 +64,7 @@ public class Client {
 	private static final String TO_STR      = "To          :";
 	private static final String SUBJECT_STR = "Subject     :";
 	
+	// Default values 
 	private static final String DEFAULT_USERNAME = "kedar@krc9698.wireless.rit.edu";
 	private static final String DEFAULT_PASSWORD = "fcn";
 	
