@@ -63,12 +63,13 @@ public class ClientSender {
 		scanner.nextLine();
 		
 		String body = "";
-		body += "From: <" + email.getFrom() + ">\r\n";
+		body += "From: " + email.getFrom() + "\r\n";
 		body += "To: " + email.getTo() + "\r\n";
 		body += "Subject: " + email.getSubject() + "\r\n";
 		body += "Date: " + new Date().toString() + "\r\n";
-		body += "Content-Type:  text/html" + " boundary=1234" + "\r\n";
+		body += "boundary=1234" + "\r\n";
 		body += "--12345" + "\r\n";
+		body += "Content-Type: text/html \r\n";
 		body += email.getContent() + "\r\n";
 		body += "--12345" + "\r\n";
 		

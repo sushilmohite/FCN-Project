@@ -139,7 +139,11 @@ public class SMTPReceiver extends Thread {
 			
 			mailTo = mailTo.substring(toString.length(), mailTo.indexOf('@'));
 			
-			mailFrom = mailFrom.substring(mailFrom.indexOf('<') + 1, mailFrom.indexOf('>'));
+			if(mailFrom.contains(ClientUtil.OUR_DOMAIN)) {
+				mailFrom = mailFrom.substring(fromString.length());
+			} else {
+				mailFrom = mailFrom.substring(mailFrom.indexOf('<') + 1, mailFrom.indexOf('>'));
+			}
 			subject = subject.substring(subjectString.length());
 			date = date.substring(dateString.length());
 			

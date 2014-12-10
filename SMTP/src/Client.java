@@ -497,7 +497,7 @@ public class Client {
 				String emailTo = receiver.getText();
 				String emailSubject = subject.getText();
 				String emailDate = new Date().toString();
-				String emailContent = content.getText();
+				String emailContent = content.getText().replaceAll("\n", "<br/>");
 				
 				Email email = new Email(emailFrom, emailTo, emailSubject, emailDate, emailContent);
 				
