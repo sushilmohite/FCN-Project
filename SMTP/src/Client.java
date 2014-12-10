@@ -214,7 +214,7 @@ public class Client {
 
 		});
 		buttons.add(compose);
-		JButton reply = new JButton("Reply");
+		/*JButton reply = new JButton("Reply");
 		reply.setPreferredSize(dummy1.getPreferredSize());
 		reply.addActionListener(new ActionListener() {
 
@@ -246,7 +246,7 @@ public class Client {
 			}
 
 		});
-		buttons.add(delete);
+		buttons.add(delete);*/
 		JButton refresh = new JButton("Refresh");
 		refresh.setPreferredSize(dummy1.getPreferredSize());
 		refresh.addActionListener(new ActionListener() {
