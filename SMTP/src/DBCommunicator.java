@@ -42,6 +42,37 @@ public class DBCommunicator {
 		return sent;
 	}
 	
+	public static boolean isAuthenticated(String username, String password) {
+		String storedPassword = null;
+		try {
+			Class.forName(driver);
+			Connection connection = DriverManager.getConnection(connectionURL, dbuser, dbpass);
+			Statement statement = connection.createStatement();
+
+			ResultSet rs = statement.executeQuery("SELECT * FROM " + "fcn.user_info" + " WHERE username = '" + username + "'");
+			if(rs.next()) {
+				storedPassword = rs.getString("password");
+			}
+			if(rs.next()) {
+				System.err.println("Multiple entries found!");
+			}
+
+			rs.close();
+			statement.close();
+			connection.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		if (password.equals(storedPassword)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public static boolean isUser(String userName) {
 		boolean exists = false;
 		

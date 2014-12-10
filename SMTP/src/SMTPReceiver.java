@@ -40,14 +40,14 @@ public class SMTPReceiver {
 		
 		public void run() {
 			
-			String mailFrom = "";
-			String mailTo = "";
+			String mailFrom = null;
+			String mailTo = null;
 			String body = "";
-			String subject = "";
-			String date = "";
-			String content = "";
-			String boundary = "";
-			String contentString = "Content-Type: ";
+			String subject = null;
+			String date = null;
+			//String content = "";
+			//String boundary = "";
+			//String contentString = "Content-Type: ";
 			String subjectString = "Subject: ";
 			String fromString = "From: ";
 			String toString = "To: ";
@@ -55,7 +55,11 @@ public class SMTPReceiver {
 			
 			try {
 				out.println(220);
-				in.readLine();
+				String temp = in.readLine();
+				if(temp.startsWith("AUTH PLAIN")) {
+					out.println("Accepted");
+					in.readLine();
+				}
 				
 				out.println(250);
 				in.readLine();
@@ -103,11 +107,14 @@ public class SMTPReceiver {
 				if (input.startsWith(dateString)) {
 					date = input;
 				}
-				if (input.startsWith(contentString)) {
+				if ((mailFrom != null) && (mailTo != null) && (subject != null) && (date != null)) {
+					break;
+				}
+				/*if (input.startsWith(contentString)) {
 					int n = input.indexOf("boundary");
 					boundary = input.substring(n + 9);
-				}
-				if (boundary != "") {
+				}*/
+				/*if (boundary != "") {
 					if (input.startsWith("--" + boundary)) {
 						sc.nextLine();
 						while (!(input = sc.nextLine()).startsWith("--" + boundary)) {
@@ -115,7 +122,7 @@ public class SMTPReceiver {
 						}
 						break;
 					}
-				}
+				}*/
 			}
 			
 			sc.close();
@@ -124,7 +131,7 @@ public class SMTPReceiver {
 			System.out.println(mailTo);
 			System.out.println(subject);
 			System.out.println(date);
-			System.out.println(content);
+			//System.out.println(content);
 			
 			mailTo = mailTo.substring(toString.length(), mailTo.indexOf('@'));
 			mailFrom = mailFrom.substring(mailFrom.indexOf('<') + 1, mailFrom.indexOf('>'));
@@ -138,8 +145,8 @@ public class SMTPReceiver {
 			System.out.println(date);
 			
 			if (DBCommunicator.isUser(mailTo)) {
-				//Email email = new Email(mailFrom, mailTo, subject, date, content);
-				//DBCommunicator.saveEmail(email);
+				Email email = new Email(mailFrom, mailTo, subject, date, body);
+				DBCommunicator.saveEmail(email);
 				System.out.println("Email saved");
 			}
 		}
