@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.Scanner;
 
 import javax.net.ssl.SSLSocket;
@@ -129,7 +130,7 @@ public class Client {
 				username = uname.getText();
 				password = new String(pass.getPassword());
 				
-				if(ClientUtil.isAuthenticated(username, password)) {
+				//if(ClientUtil.isAuthenticated(username, password)) {
 					authenticator.dispose();
 					clientReceiver = new ClientReceiver(username, password);
 					
@@ -142,9 +143,9 @@ public class Client {
 					frame.pack();
 					frame.setVisible(true);
 
-				} else {
+				//} else {
 					JOptionPane.showMessageDialog(null, "Invalid Username / password");
-				}
+				//}
 			}
 		});
 		bPanel.add(login);
@@ -433,7 +434,7 @@ public class Client {
 		constraints.weighty = 2;
 		main.add(receiverlbl, constraints);
 
-		JTextField receiver = new JTextField();
+		final JTextField receiver = new JTextField();
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -457,7 +458,7 @@ public class Client {
 		constraints.weighty = 2;
 		main.add(subjectlbl, constraints);
 
-		JTextField subject = new JTextField();
+		final JTextField subject = new JTextField();
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		constraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -469,7 +470,7 @@ public class Client {
 		main.add(subject, constraints);		
 
 		// Add content
-		JTextArea content = new JTextArea();
+		final JTextArea content = new JTextArea();
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.fill = GridBagConstraints.BOTH;
@@ -482,6 +483,22 @@ public class Client {
 		
 		// Add content
 		JButton send = new JButton("Send");
+		send.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String emailFrom = username;
+				String emailTo = receiver.getText();
+				String emailSubject = subject.getText();
+				String emailDate = new Date().toString();
+				String emailContent = content.getText();
+				
+				Email email = new Email(emailFrom, emailTo, emailSubject, emailDate, emailContent);
+				
+				ClientSender clientSender = new ClientSender(username, password);
+				clientSender.sendEmail(email);
+			}
+		});
 		constraints.gridx = 0;
 		constraints.gridy = 3;
 		constraints.fill = GridBagConstraints.BOTH;
