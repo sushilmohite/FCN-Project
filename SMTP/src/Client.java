@@ -1,3 +1,9 @@
+/**
+ * File: Client.java
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ */
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -7,13 +13,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
-import java.util.Scanner;
 
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -24,20 +25,22 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-
+/**
+ * Client class creates and displays the GUI for the client
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ */
 public class Client {
 
 	private JFrame frame;
@@ -214,39 +217,7 @@ public class Client {
 
 		});
 		buttons.add(compose);
-		/*JButton reply = new JButton("Reply");
-		reply.setPreferredSize(dummy1.getPreferredSize());
-		reply.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-
-		});
-		buttons.add(reply);
-		JButton forward = new JButton("Forward");
-		forward.setPreferredSize(dummy1.getPreferredSize());
-		forward.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-
-		});
-		buttons.add(forward);
-		JButton delete = new JButton("Delete");
-		delete.setPreferredSize(dummy1.getPreferredSize());
-		delete.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-
-		});
-		buttons.add(delete);*/
+		
 		JButton refresh = new JButton("Refresh");
 		refresh.setPreferredSize(dummy1.getPreferredSize());
 		refresh.addActionListener(new ActionListener() {
@@ -424,7 +395,6 @@ public class Client {
 		main.setPreferredSize(new Dimension(600, 400));
 		main.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
-//		Border border = BorderFactory.createEtchedBorder();
 		main.setBorder(new EmptyBorder(10, 10, 10, 10) );
 
 		// Add From line
@@ -551,6 +521,11 @@ public class Client {
 
 }
 
+/**
+ * Private class to render each cell in the JList (Left panel)
+ * 
+ * @author Kedarnath Calangutkar, Sushil Mohite, Shivangi
+ */
 class CustomCellRenderer extends JLabel implements ListCellRenderer<Email> {
 
 	private static final long serialVersionUID = -7969372306425418822L;
