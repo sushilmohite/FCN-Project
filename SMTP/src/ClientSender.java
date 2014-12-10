@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.Scanner;
 
 import javax.net.ssl.SSLSocket;
@@ -19,7 +20,7 @@ public class ClientSender {
 	
 	public boolean sendEmail(Email email) {
 		
-		if (username.contains(ClientUtil.OUR_DOMAIN) && email.getTo().contains(ClientUtil.GMAIL_DOMAIN)) {
+		if (username.contains(ClientUtil.OUR_DOMAIN) && !email.getTo().contains(ClientUtil.OUR_DOMAIN)) {
 			return false;
 		}
 
@@ -57,7 +58,17 @@ public class ClientSender {
 		out.println("data");
 		scanner.nextLine();
 		
-		Scanner scanContent = new Scanner(email.getHTMLContent());
+		String body = "";
+		body += "From: " + email.getFrom() + "\n";
+		body += "To: " + email.getTo() + "\n";
+		body += "Subject: " + email.getSubject() + "\n";
+		body += "Date: " + new Date().toString() + "\n";
+		body += "Content-Type: " + "boundary=1234" + "\n";
+		body += "--1234" + "\n";
+		body += email.getHTMLContent() + "\n";
+		body += "--1234" + "\n";
+		
+		Scanner scanContent = new Scanner(body);
 		while(scanContent.hasNextLine()) {
 			out.println(scanContent.nextLine());
 		}

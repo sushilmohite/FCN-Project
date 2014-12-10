@@ -133,7 +133,7 @@ public class Client {
 				username = uname.getText();
 				password = new String(pass.getPassword());
 				
-				if(ClientUtil.isAuthenticated(username, password)) {
+				//if(ClientUtil.isAuthenticated(username, password)) {
 					authenticator.dispose();
 					clientReceiver = new ClientReceiver(username, password);
 					
@@ -146,9 +146,9 @@ public class Client {
 					frame.pack();
 					frame.setVisible(true);
 
-				} else {
+				//} else {
 					JOptionPane.showMessageDialog(null, "Invalid Username / password");
-				}
+				//}
 			}
 		});
 		bPanel.add(login);
